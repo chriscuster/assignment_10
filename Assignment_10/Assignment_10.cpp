@@ -18,13 +18,48 @@ bool mines[BOARD_WIDTH][BOARD_HEIGHT];
 char board[BOARD_WIDTH][BOARD_HEIGHT];
 
 
-//void displayBoard(char board[][BOARD_HEIGHT], int width, int height)
-//{
-//
-//	
-//
-//}
-//
+void displayBoard(char board[][BOARD_HEIGHT], int width, int height)
+{
+	int row = 0;
+	
+	// adjusting height for extra rows to display
+	for (int h = 0; h < BOARD_HEIGHT * 2 + 2; h++)
+	{
+		for (int w = 0; w < BOARD_WIDTH + 1; w++)
+		{
+			// top row
+			if (h == 0)
+			{
+				if (w == 0)
+					cout << "     " << w + 1 << "  ";
+				else if (w < 9)
+					cout << " " << w + 1 << "  ";
+				else if (w < BOARD_WIDTH)
+					cout << w + 1 << "  ";
+			}
+			else if (h % 2 == 0)
+			{
+				if (w == 0)
+					cout << " " << h / 2 << " |";
+				else
+					cout << " " << board[w - 1][(h / 2) - 1] << " |";
+			}
+			else // odd row
+			{
+				if (w == 0)
+					cout << "   +";
+				else
+					cout << "---+";
+
+			}
+			if (w == BOARD_WIDTH)
+				cout << endl;
+		}
+	}
+
+
+}
+
 //void displayMines(bool mines[][BOARD_HEIGHT], int width, int height)
 //{
 //
@@ -39,7 +74,7 @@ char board[BOARD_WIDTH][BOARD_HEIGHT];
 int main(int argc, char* argv[])
 {
 	// set arrays
-	for (int w = 0; w < BOARD_HEIGHT; w++)
+	for (int w = 0; w < BOARD_WIDTH; w++)
 	{
 		for (int h = 0; h < BOARD_HEIGHT; h++)
 		{
@@ -72,6 +107,8 @@ int main(int argc, char* argv[])
 			mines[wCoordinate][hCoordinate] = true;
 		}
 	} while (numberOfMines < 10);
+	displayBoard(board, BOARD_WIDTH, BOARD_HEIGHT);
+
 
 
 	cout << "gfy";
