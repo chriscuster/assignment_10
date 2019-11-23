@@ -48,7 +48,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-
 	// if argc>0 debug seed 0 in rand, else use time
 	if (argc > 0)
 	{
@@ -58,9 +57,24 @@ int main(int argc, char* argv[])
 	{
 		srand(time(NULL));
 	}
-	
+
+	// get the random h/w coordinates for mines 
+	int wCoordinate;
+	int hCoordinate;
+	int numberOfMines = 0;
+
+	do {
+		wCoordinate = rand() % 12;
+		hCoordinate = rand() % 9;
+		if (mines[wCoordinate][hCoordinate] == false)
+		{
+			numberOfMines++;
+			mines[wCoordinate][hCoordinate] = true;
+		}
+	} while (numberOfMines < 10);
 
 
+	cout << "gfy";
 
 
 
