@@ -14,14 +14,11 @@ using namespace std;
 const int BOARD_WIDTH = 12;
 const int BOARD_HEIGHT = 9;
 
-bool mines[BOARD_WIDTH][BOARD_HEIGHT];
-char board[BOARD_WIDTH][BOARD_HEIGHT];
-
 
 void displayBoard(char board[][BOARD_HEIGHT], int width, int height)
 {
 	int row = 0;
-	
+
 	// adjusting height for extra rows to display
 	for (int h = 0; h < BOARD_HEIGHT * 2 + 2; h++)
 	{
@@ -76,17 +73,32 @@ void displayMines(bool mines[][BOARD_HEIGHT], int width, int height)
 	}
 
 	displayBoard(mineDisplay, BOARD_WIDTH, BOARD_HEIGHT);
-
+	cout << endl << "You hit a mine! Game over." << endl;
 }
 
-//bool hasPlayerWon(char board[][BOARD_HEIGHT], bool mines[][BOARD_HEIGHT], int width, int height)
-//{
-//
-//}
+bool hasPlayerWon(char board[][BOARD_HEIGHT], bool mines[][BOARD_HEIGHT], int width, int height)
+{
+	int numberOfQuestionMarks = 0;
+	for (int w = 0; w < BOARD_WIDTH; w++)
+	{
+		for (int h = 0; h < BOARD_HEIGHT; h++)
+		{
+			if (board[w][h] == '?')
+				numberOfQuestionMarks++;
+		}
+	}
+
+	return numberOfQuestionMarks == 10;
+}
 
 
 int main(int argc, char* argv[])
 {
+	bool mines[BOARD_WIDTH][BOARD_HEIGHT];
+	char board[BOARD_WIDTH][BOARD_HEIGHT];
+	bool checkAgain = false;
+	int userWidth = 0;
+	int userHeight = 0;
 	// set arrays
 	for (int w = 0; w < BOARD_WIDTH; w++)
 	{
@@ -121,22 +133,42 @@ int main(int argc, char* argv[])
 			mines[wCoordinate][hCoordinate] = true;
 		}
 	} while (numberOfMines < 10);
-	
-	
-	//displayBoard(board, BOARD_WIDTH, BOARD_HEIGHT);
-	displayMines(mines, 12, 9);
 
 
-	cout << "gfy";
+	//displayMines(mines, 12, 9);
 
 
-
-	/*do
+	// start game
+	do
 	{
-		bool checkAgain = false;
-		for (int i = 0; i < BOARD_X; i++)
+		displayBoard(board, BOARD_WIDTH, BOARD_HEIGHT);
+		//bool checkAgain = false;
+		cout << "Dig at X: ";
+		cin >> userWidth;
+		cout << endl;
+		cout << "Dig at Y: ";
+		cin >> userHeight;
+		cout << endl;
+
+		userWidth--;
+		userHeight--;
+		if (mines[userWidth][userHeight])
 		{
-			for (int j = 0; j < BOARD_Y; j++)
+			displayMines(mines, BOARD_WIDTH, BOARD_HEIGHT);
+			return 0;
+		}
+
+		if (board[userWidth][userHeight] != '?'
+			|| userWidth < 0 || userWidth>11 || userHeight < 0 || userHeight>8)
+		{
+			cout << "Invlalid input, please try again..." << endl;
+			continue;
+		}
+
+		board[userWidth][userHeight] = 'c';
+		for (int i = 0; i < BOARD_WIDTH; i++)
+		{
+			for (int j = 0; j < BOARD_HEIGHT; j++)
 			{
 				if (board[i][j] == 'c')
 				{
@@ -145,41 +177,41 @@ int main(int argc, char* argv[])
 					{
 						for (int m = -1; m <= 1; m++)
 						{
-							mineCount++;
-						}
-					}
-				}
-				if (mineCount == 0)
-				{
-					board[i][j] = ' ';
-					for (int k = -1; k < 1; k++)
-					{
-						for (int m = -1; m <= 1; m++)
-						{
-							if (board[i + k][j + m] == '?')
+							if (mines[i + k][j + m] == true)
 							{
-								board[i + k][j + m] = 'c';
-								checkAgain = true;
+								mineCount++;
 							}
 						}
 					}
-				}
-				else
-				{
-					board[i][j] = '0' + mineCount;
+					if (mineCount == 0)
+					{
+						board[i][j] = ' ';
+						for (int k = -1; k < 1; k++)
+						{
+							for (int m = -1; m <= 1; m++)
+							{
+								if (board[i + k][j + m] == '?')
+								{
+									board[i + k][j + m] = 'c';
+									checkAgain = true;
+								}
+							}
+						}
+						// reset i and j indexes to lowest c point
+						if (checkAgain)
+						{
+							i--;
+							j--;
+						}
+					}
+					else
+					{
+						board[i][j] = '0' + mineCount;
+					}
 				}
 			}
 		}
-
 	} while (checkAgain);
-*/
-
-
-
-
-
-
-
 
 
 
@@ -193,19 +225,6 @@ int main(int argc, char* argv[])
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
