@@ -60,11 +60,25 @@ void displayBoard(char board[][BOARD_HEIGHT], int width, int height)
 
 }
 
-//void displayMines(bool mines[][BOARD_HEIGHT], int width, int height)
-//{
-//
-//}
-//
+void displayMines(bool mines[][BOARD_HEIGHT], int width, int height)
+{
+	char mineDisplay[BOARD_WIDTH][BOARD_HEIGHT];
+	// set arrays
+	for (int w = 0; w < BOARD_WIDTH; w++)
+	{
+		for (int h = 0; h < BOARD_HEIGHT; h++)
+		{
+			if (mines[w][h])
+				mineDisplay[w][h] = '*';
+			else
+				mineDisplay[w][h] = ' ';
+		}
+	}
+
+	displayBoard(mineDisplay, BOARD_WIDTH, BOARD_HEIGHT);
+
+}
+
 //bool hasPlayerWon(char board[][BOARD_HEIGHT], bool mines[][BOARD_HEIGHT], int width, int height)
 //{
 //
@@ -107,8 +121,10 @@ int main(int argc, char* argv[])
 			mines[wCoordinate][hCoordinate] = true;
 		}
 	} while (numberOfMines < 10);
-	displayBoard(board, BOARD_WIDTH, BOARD_HEIGHT);
-
+	
+	
+	//displayBoard(board, BOARD_WIDTH, BOARD_HEIGHT);
+	displayMines(mines, 12, 9);
 
 
 	cout << "gfy";
